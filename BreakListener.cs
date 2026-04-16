@@ -36,7 +36,7 @@ public class BreakListener : Listener
             return;
         }
 
-        //Veinmine(block, 64, player);
+        Veinmine(block, 64, player);
     }
 
 
