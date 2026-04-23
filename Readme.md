@@ -17,7 +17,7 @@ defaultMode: Crouching # Can be set to Crouching, Always or Never.
 useDurability: true # When true, tool durability will be decremented for every block veinmined.
 saveTools: true # When true, veinmining will be stopped when tools reach 1 remaining durability.
 useHunger: true # When true, for every veinmined block saturation then hunger will be decremented, then when 0 hunger remains veinmining will be blocked.
-ignoreEnchants: false # When true, Unbreaking enchantment is ignored, taking 1 durability per block, else when false the standard chance per .level will apply
+ignoreEnchants: false # When true, Unbreaking enchantment is ignored, taking 1 durability per block, else when false the standard chance per level will apply.
 maxBlocks: 64 # Max blocks to veinmine at once.
 
 toolTypes: # Underneath here we can define tool groups

@@ -1,3 +1,4 @@
+using Minecraft.Server.FourKit;
 using Minecraft.Server.FourKit.Command;
 using Minecraft.Server.FourKit.Entity;
 
@@ -17,26 +18,26 @@ public class SetModeCommand : CustomCommand
     {
         if (sender is not Player player)
         {
-            sender.sendMessage("Only players can use this command.");
+            sender.sendMessage(ChatColor.RED + "Only players can use this command.");
             return true;
         }
 
         if (args.Length < 1)
         {
-            sender.sendMessage($"Usage: {Usage}");
+            sender.sendMessage($"{ChatColor.RED}Usage: {Usage}");
             return true;
         }
 
         if (!TryParseMode(args[0], out PlayerVeinMinerMode mode))
         {
-            sender.sendMessage("Invalid mode. Use: default, always, crouching, never.");
+            sender.sendMessage(ChatColor.RED + "Invalid mode. Use: default, always, crouching, never.");
             return true;
         }
 
         Veinminer.PlayerData.SetPlayerMode(player.getUniqueId(), mode);
         Veinminer.SavePlayerData();
 
-        sender.sendMessage($"VeinMiner mode set to: {mode}");
+        sender.sendMessage($"{ChatColor.GREEN}VeinMiner mode set to: {mode}");
         return true;
     }
 

@@ -1,4 +1,5 @@
-﻿using Minecraft.Server.FourKit.Command;
+﻿using Minecraft.Server.FourKit;
+using Minecraft.Server.FourKit.Command;
 using Minecraft.Server.FourKit.Entity;
 using System;
 using System.Collections.Generic;
@@ -21,7 +22,7 @@ internal class ReloadCommand : CustomCommand
 
         Veinminer.ReloadConfig();
         Veinminer.ReloadPlayerData();
-        sender.sendMessage("VeinMiner configuration and player data reloaded successfully.");
+        sender.sendMessage(ChatColor.GREEN + "VeinMiner configuration and player data reloaded successfully.");
 
         return true;
     }

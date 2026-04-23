@@ -1,4 +1,5 @@
-﻿using Minecraft.Server.FourKit.Command;
+﻿using Minecraft.Server.FourKit;
+using Minecraft.Server.FourKit.Command;
 
 namespace VeinMiner_LCE.Commands;
 
@@ -14,7 +15,7 @@ public class HelpCommand : CustomCommand
 
     public bool onCommand(CommandSender sender, Command command, string label, string[] args)
     {
-        sender.sendMessage("VeinMiner LCE - Commands:");
+        sender.sendMessage(ChatColor.GOLD + "VeinMiner LCE - Commands:");
         sender.sendMessage("/veinminer setmode <default | always | crouching | never>");
         sender.sendMessage("/veinminer help");
         return true;
