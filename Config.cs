@@ -17,8 +17,9 @@ public sealed class Config
 
     private const string DefaultFileComments = "# VeinMiner-LCE configuration\n"
         + "# defaultMode: Always | Crouching | Never\n"
-        + "# saveTools: Prevent tools from breaking (leave 1 durability)\n"
         + "# useDurability: Apply tool durability loss while vein mining\n"
+        + "# saveTools: Prevent tools from breaking (leave 1 durability)\n"
+        + "# ignoreEnchants: Ignores tool enchants like Unbreaking and applies a 1 durability cost per block if userDurability is true\n"
         + "# useHunger: Consume player hunger/saturation while vein mining\n"
         + "# block metadata example:\n"
         + "#   - id: LOG\n"

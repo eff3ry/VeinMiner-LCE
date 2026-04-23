@@ -19,7 +19,13 @@ public class BreakListener : Listener
         Player player = e.getPlayer();
         Block block = e.getBlock();
 
-        if (Veinminer.CurrentConfig.DefaultMode == ServerVeinMinerMode.Crouching && !player.isSneaking())
+        ServerVeinMinerMode mode = Veinminer.PlayerData.GetEffectiveMode(player, Veinminer.CurrentConfig.DefaultMode);
+        if (mode == ServerVeinMinerMode.Never)
+        {
+            return;
+        }
+
+        if (mode == ServerVeinMinerMode.Crouching && !player.isSneaking())
         {
             return;
         }

@@ -12,19 +12,28 @@ public class Veinminer : ServerPlugin
 
     public static string ConfigPath { get; private set; } = Path.Combine(GetPluginDirectory(), Config.DefaultFileName);
 
+    public static string PlayerDataPath { get; private set; } = Path.Combine(GetPluginDirectory(), PlayerDataStore.DefaultFileName);
+
     public static Config CurrentConfig { get; private set; } = Config.CreateDefault();
+
+    public static PlayerDataStore PlayerData { get; private set; } = new();
 
     public override void onEnable()
     {
         ConfigPath = Path.Combine(GetPluginDirectory(), Config.DefaultFileName);
+        PlayerDataPath = Path.Combine(GetPluginDirectory(), PlayerDataStore.DefaultFileName);
         ReloadConfig();
+        ReloadPlayerData();
 
         FourKit.addListener(new BreakListener());
+
+        FourKit.getCommand("veinminer").setExecutor(new Commands.RootCommand());
     }
 
     public override void onDisable()
     {
         SaveConfig();
+        SavePlayerData();
     }
 
     public static void ReloadConfig()
@@ -35,6 +44,16 @@ public class Veinminer : ServerPlugin
     public static void SaveConfig()
     {
         CurrentConfig.Save(ConfigPath);
+    }
+
+    public static void ReloadPlayerData()
+    {
+        PlayerData = PlayerDataStore.LoadOrCreate(PlayerDataPath);
+    }
+
+    public static void SavePlayerData()
+    {
+        PlayerData.Save(PlayerDataPath);
     }
 
     private static string GetPluginDirectory()
