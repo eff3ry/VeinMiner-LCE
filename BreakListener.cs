@@ -44,8 +44,19 @@ public class BreakListener : Listener
     {
         World world = startBlock.getWorld();
 
-        //Fetch BlockType Alias' from config file
-        int[] BlockTypes = { startBlock.getTypeId() };
+        //Check Tool
+        ItemStack? tool = player.getItemInHand();
+        if (tool == null)
+        {
+            return 0;
+        }
+        int startData = startBlock.getData();
+        List<BlockEntry> matchingEntries = Veinminer.CurrentConfig.ResolveMatchingEntriesForTool(tool.getType(), startBlock.getType(), startData);
+        if (matchingEntries.Count == 0)
+        {
+            return 0;
+        }
+
 
         HashSet<Location> visited = new HashSet<Location>();
         Queue<Location> toCheck = new Queue<Location>();
@@ -64,7 +75,7 @@ public class BreakListener : Listener
 
             Block currentBlock = world.getBlockAt(currentLocation);
 
-            if (Array.Exists(BlockTypes, type => type == currentBlock.getTypeId()))
+            if (MatchesAnyEntry(currentBlock, matchingEntries))
             {
                 if (!PlayerUtils.CanContinueVeinMining(player))
                 {
@@ -90,6 +101,22 @@ public class BreakListener : Listener
             }
         }
         return blocksBroken;
+    }
+
+    private static bool MatchesAnyEntry(Block block, List<BlockEntry> entries)
+    {
+        string blockId = block.getType().ToString();
+        int blockData = block.getData();
+
+        foreach (BlockEntry entry in entries)
+        {
+            if (entry.Matches(blockId, blockData))
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /// <summary>

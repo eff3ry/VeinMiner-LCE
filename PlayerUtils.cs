@@ -63,11 +63,11 @@ internal static class PlayerUtils
             if (saturationLevel > 0)
             {
                 player.setSaturation(MathF.Max(0f, saturationLevel - 1.0f));
-                player.sendMessage("Saturation decreased by 1.0 due to exhaustion.");
+                //player.sendMessage("Saturation decreased by 1.0 due to exhaustion.");
             } else
             {
                 player.setFoodLevel(Math.Max(0, foodLevel - 1));
-                player.sendMessage("Food level decreased by 1 due to exhaustion.");
+                //player.sendMessage("Food level decreased by 1 due to exhaustion.");
             }
         }
         SetExhaustion(player.getUniqueId(), exhaustion);

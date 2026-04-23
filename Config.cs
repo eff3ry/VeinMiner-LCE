@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Minecraft.Server.FourKit;
 using YamlDotNet.Core;
 using YamlDotNet.Core.Events;
 using YamlDotNet.Serialization;
@@ -147,6 +148,65 @@ public sealed class Config
         return all;
     }
 
+    public HashSet<Material> ResolveBlockAliasesForTool(Material tool, Material block)
+    {
+        HashSet<Material> aliases = [];
+        string blockId = block.ToString();
+
+        foreach (BlockEntry blockEntry in ResolveEntriesForTool(tool))
+        {
+            bool containsBlock = blockEntry.Values.Any(v => string.Equals(v, blockId, StringComparison.OrdinalIgnoreCase));
+            if (!containsBlock)
+            {
+                continue;
+            }
+
+            foreach (string value in blockEntry.Values)
+            {
+                if (Enum.TryParse(value, true, out Material material))
+                {
+                    aliases.Add(material);
+                }
+            }
+        }
+
+        return aliases;
+    }
+
+    public List<BlockEntry> ResolveMatchingEntriesForTool(Material tool, Material block, int blockData)
+    {
+        string blockId = block.ToString();
+        List<BlockEntry> matches = [];
+
+        foreach (BlockEntry blockEntry in ResolveEntriesForTool(tool))
+        {
+            if (blockEntry.Matches(blockId, blockData))
+            {
+                matches.Add(blockEntry);
+            }
+        }
+
+        return matches;
+    }
+
+    public HashSet<Material> ResolveBlocksForTool(Material tool)
+    {
+        HashSet<Material> all = [];
+
+        foreach (BlockEntry blockEntry in ResolveEntriesForTool(tool))
+        {
+            foreach (string blockId in blockEntry.Values)
+            {
+                if (Enum.TryParse(blockId, true, out Material material))
+                {
+                    all.Add(material);
+                }
+            }
+        }
+
+        return all;
+    }
+
     public List<BlockEntry> ResolveRuleEntries(string ruleName)
     {
         if (!Rules.TryGetValue(ruleName, out VeinRule? rule))
@@ -192,6 +252,11 @@ public sealed class Config
         }
 
         return all;
+    }
+
+    public List<BlockEntry> ResolveEntriesForTool(Material tool)
+    {
+        return ResolveEntriesForTool(tool.ToString());
     }
 
     public List<BlockEntry> ResolveEntriesForTool(string toolId)

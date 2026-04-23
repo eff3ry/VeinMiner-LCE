@@ -28,6 +28,7 @@ public class Veinminer : ServerPlugin
         FourKit.addListener(new BreakListener());
 
         FourKit.getCommand("veinminer").setExecutor(new Commands.RootCommand());
+        
     }
 
     public override void onDisable()
