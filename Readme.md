@@ -1,12 +1,15 @@
 ﻿# Veinminer LCE
 Server side plugin for Legacy Console Edition based on [Fourkit API](https://github.com/sylvessa/MinecraftConsoles)
 
-## Setup:
+## Current State
+Be noted this project currently does not respect the tool groups or block groups just yet, all other config parameters and commands are currently implemented
+
+## Setup
 - Create a folder called `VeinMiner-LCE` inside the server `plugins` folder.
 - Place the built `VeinMiner-LCE.dll` file and the dependency `YamlDotNet.dll` inside the newly created `VeinMiner-LCE` folder.
 - Either create a new Config file using the following example below or let the plugin generate the default upon the first run.
 
-## Config:
+## Config
 ```YML
 configVersion: 1 # Auto-Generated
 
