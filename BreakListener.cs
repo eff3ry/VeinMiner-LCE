@@ -20,13 +20,12 @@ public class BreakListener : Listener
         Block block = e.getBlock();
 
         if (Veinminer.CurrentConfig.DefaultMode == ServerVeinMinerMode.Crouching && !player.isSneaking())
-        ItemStack? itemInHand = player.getItemInHand();
-        if (itemInHand != null)
         {
             return;
         }
 
-        if (!player.isSneaking())
+        //Apply a check here to avoid a wasted attempt
+        if (!PlayerUtils.CanContinueVeinMining(player))
         {
             return;
         }
@@ -61,14 +60,23 @@ public class BreakListener : Listener
 
             if (Array.Exists(BlockTypes, type => type == currentBlock.getTypeId()))
             {
-                if (!CanContinueVeinMining(player))
+                if (!PlayerUtils.CanContinueVeinMining(player))
                 {
-                    player.sendMessage("Your tool is too damaged to continue vein mining!");
+                    //player.sendMessage("Your tool is too damaged to continue vein mining!");
                     break;
                 }
 
                 currentBlock.breakNaturally();
-                DamageCurrentTool(player, false);
+
+                if (Veinminer.CurrentConfig.UseDurability)
+                {
+                    PlayerUtils.ApplyToolDamage(player);
+                }
+                if (Veinminer.CurrentConfig.UseHunger)
+                {
+                    PlayerUtils.ApplyExhaustion(player);
+                }
+
                 blocksBroken++;            
 
                 // Check adjacent blocks of the newly broken block
@@ -134,93 +142,5 @@ public class BreakListener : Listener
                 new Location(1, -1, -1), new Location(1, -1, 1),
                 new Location(0, -1, 0)
         ];
-    }
-
-    private void DamageCurrentTool(Player player, bool ignoreEnchantments, int damageAttempts = 1)
-    {
-        ItemStack? toolItem = player.getItemInHand();
-        if (toolItem == null)
-        {
-            return;
-        }
-
-        short durability = toolItem.getDurability();
-        short newDurability = durability;
-
-        if (ignoreEnchantments)
-        {
-            newDurability = (short)(durability + damageAttempts);
-        } else
-        {
-            for (int i = 0; i < damageAttempts; i++)
-            {
-                if (toolItem.getItemMeta().getEnchants().TryGetValue(EnchantmentType.DURABILITY, out int unbreakingLevel) && unbreakingLevel > 0)
-                {
-                    // Simulate unbreaking enchantment
-                    double chanceToNotDamage = 1.0 / (unbreakingLevel + 1);
-                    if (new Random().NextDouble() >= chanceToNotDamage)
-                    {
-                        newDurability++;
-                    }
-                }
-                else
-                {
-                    newDurability++;
-                }
-            }
-        }
-
-        if (Veinminer.CurrentConfig.SaveTools && ToolDurability.TryGetMaxDurability(toolItem.getType(), out short maxDurability))
-        {
-            short safeMax = (short)(maxDurability - 2); // safe needs to be -2 not -1 because of the initial block break
-            if (newDurability >= safeMax)
-            {
-                if (durability < safeMax)
-                {
-                    player.playSound(player.getLocation(), Sound.ITEM_BREAK, 1, 1);
-                }
-
-                newDurability = safeMax;
-            }
-        }
-
-        //for some reason setting durability clears itemmeta, so we need to store the enchantments and reapply them after setting durability
-        //ItemMeta meta = toolItem.getItemMeta().clone();
-
-
-        //player.sendMessage("" + toolItem.hasItemMeta());
-        toolItem.setDurability(newDurability);
-
-
-
-        //player.sendMessage($"Tool durability: {toolItem.getDurability()}, ToolMeta: {toolItem.getItemMeta().getEnchants()}");
-        //toolItem.setItemMeta(meta);
-    }
-
-    private bool CanContinueVeinMining(Player player)
-    {
-        ItemStack? toolItem = player.getItemInHand();
-        if (toolItem == null)
-        {
-            return false;
-        }
-
-        if (!Veinminer.CurrentConfig.SaveTools)
-        {
-            return true;
-        }
-
-        if (!ToolDurability.TryGetMaxDurability(toolItem.getType(), out short maxDurability))
-        {
-            return true;
-        }
-
-        short safeMax = (short)(maxDurability - 2);
-        if (toolItem.getDurability() >= safeMax)
-        {
-            return false;
-        }
-
-        return true;
     }
 }

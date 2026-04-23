@@ -37,9 +37,6 @@ public sealed class Config
         .Build();
 
     public ServerVeinMinerMode DefaultMode { get; init; } = ServerVeinMinerMode.Crouching;
-
-    public bool SaveTools { get; init; } = true;
-
     public bool UseDurability { get; init; } = true;
     public bool SaveTools { get; init; } = true;
     public bool UseHunger { get; init; } = true;

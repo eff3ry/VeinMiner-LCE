@@ -9,13 +9,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Reference Include="Minecraft.Server.FourKit">
-      <HintPath>..\..\..\Documents\GitHub\MCLCE\build\windows64\Minecraft.Server.FourKit\bin\Debug\Minecraft.Server.FourKit.dll</HintPath>
-    </Reference>
+    <PackageReference Include="YamlDotNet" Version="16.3.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="YamlDotNet" Version="16.3.0" />
+    <Reference Include="Minecraft.Server.FourKit">
+      <HintPath>..\..\..\Downloads\Minecraft.Server.Fourkit.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>
