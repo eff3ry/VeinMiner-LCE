@@ -19,16 +19,11 @@ public class BreakListener : Listener
         Player player = e.getPlayer();
         Block block = e.getBlock();
 
-
+        if (Veinminer.CurrentConfig.DefaultMode == ServerVeinMinerMode.Crouching && !player.isSneaking())
         ItemStack? itemInHand = player.getItemInHand();
         if (itemInHand != null)
         {
-            player.sendMessage("hasItemMeta: " + itemInHand.hasItemMeta());
-            ItemStack newItem = new ItemStack(Material.DIAMOND_PICKAXE, 1);
-            ItemMeta meta = new ItemMeta();
-            meta.setLore(["Test"]);
-            newItem.setItemMeta(meta);
-            player.getInventory().addItem(newItem);
+            return;
         }
 
         if (!player.isSneaking())

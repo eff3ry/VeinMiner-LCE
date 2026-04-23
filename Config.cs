@@ -36,14 +36,14 @@ public sealed class Config
         .WithTypeConverter(new BlockEntryYamlTypeConverter())
         .Build();
 
-    public VeinMinerMode DefaultMode { get; init; } = VeinMinerMode.Crouching;
+    public ServerVeinMinerMode DefaultMode { get; init; } = ServerVeinMinerMode.Crouching;
 
     public bool SaveTools { get; init; } = true;
 
     public bool UseDurability { get; init; } = true;
-
-    public bool UseHunger { get; init; } = false;
-
+    public bool SaveTools { get; init; } = true;
+    public bool UseHunger { get; init; } = true;
+    public bool IgnoreEnchants { get; init; } = false;
     public int MaxBlocks { get; init; } = 64;
 
     public Dictionary<string, HashSet<string>> ToolTypes { get; init; } = new(StringComparer.OrdinalIgnoreCase);
@@ -54,7 +54,7 @@ public sealed class Config
     {
         return new Config
         {
-            DefaultMode = VeinMinerMode.Crouching,
+            DefaultMode = ServerVeinMinerMode.Crouching,
             SaveTools = true,
             UseDurability = true,
             UseHunger = true,
@@ -67,6 +67,19 @@ public sealed class Config
             },
             Rules = new Dictionary<string, VeinRule>(StringComparer.OrdinalIgnoreCase)
             {
+                ["shovel"] = new VeinRule
+                {
+                    Blocks =
+                    [
+                        BlockEntry.From("GRASS"),
+                        BlockEntry.From("DIRT"),
+                        BlockEntry.From("SAND"),
+                        BlockEntry.From("GRAVEL"),
+                        BlockEntry.From("CLAY"),
+                        BlockEntry.From("SOIL"),
+                    ]
+
+                },
                 ["pickaxe"] = new VeinRule
                 {
                     Blocks =
@@ -213,8 +226,16 @@ public sealed class Config
     }
 }
 
-public enum VeinMinerMode
+public enum ServerVeinMinerMode
 {
+    Always,
+    Crouching,
+    Never
+}
+
+public enum PlayerVeinMinerMode
+{
+    Default,
     Always,
     Crouching,
     Never
