@@ -4,7 +4,7 @@ Server side plugin for Legacy Console Edition based on [Fourkit API](https://git
 ## Setup
 - Create a folder called `VeinMiner-LCE` inside the server `plugins` folder.
 - Place the built `VeinMiner-LCE.dll` file and the dependency `YamlDotNet.dll` inside the newly created `VeinMiner-LCE` folder.
-- Either create a new Config file using the following example below or let the plugin generate the default upon the first run.
+- Either create a new Config file called `veinminer.yml` using the following example below or let the plugin generate the default upon the first run.
 
 ## Config
 ```YML
